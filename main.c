@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include "stdlib.h"
 #include "string.h"
-struct nodo{
+
+struct nodo {
     char rut[20];
     struct nodo * enlace;
 };
-int ejemploNodos(){
+
+int ejemploNodos() {
     struct nodo * rutsDeLosCabros, * inicioRuts, * finRuts;
     int cantidadCabros;
     char rutdv[20];
@@ -21,93 +23,93 @@ int ejemploNodos(){
         scanf("%s", rutdv);
         //scanf("%c", rutsDeLosCabros->digitoVerificador);
 
-        rutsDeLosCabros = malloc(sizeof(struct nodo));              //creamos nuevo nodo para agregar a la lista
-        if (rutsDeLosCabros == NULL) {                              //si da NULL es por que no hay memoria disponible
+        rutsDeLosCabros = malloc(sizeof (struct nodo)); //creamos nuevo nodo para agregar a la lista
+        if (rutsDeLosCabros == NULL) { //si da NULL es por que no hay memoria disponible
             printf("ERROR EN ASIGNAR MEMORIA!!");
             return -1;
         }
         strcpy(rutsDeLosCabros->rut, rutdv);
         rutsDeLosCabros->enlace = NULL;
 
-        if(i==0) {
-            inicioRuts = rutsDeLosCabros;                      //enlace de nodo inicial, inicio y término quedan al inicio.
+        if (i == 0) {
+            inicioRuts = rutsDeLosCabros; //enlace de nodo inicial, inicio y término quedan al inicio.
             finRuts = inicioRuts;
-        }else{
-            finRuts->enlace = rutsDeLosCabros;                  //el último nodo apuntará al nuevo nodo creado
-            finRuts = rutsDeLosCabros;                          //movemos el nodo final al término de la fila.
+        } else {
+            finRuts->enlace = rutsDeLosCabros; //el último nodo apuntará al nuevo nodo creado
+            finRuts = rutsDeLosCabros; //movemos el nodo final al término de la fila.
         }
 
     }
     //mostrando los nodos
     rutsDeLosCabros = inicioRuts;
-    while(rutsDeLosCabros!= NULL){
-        if (strcmp(rutsDeLosCabros->rut,"rutingresado")==0)
+    while (rutsDeLosCabros != NULL) {
+        if (strcmp(rutsDeLosCabros->rut, "rutingresado") == 0)
             //aca se actualizan los campos de esa estructura
-            printf("\nrut %s",rutsDeLosCabros->rut );
-        printf("\nsiguiente Nodo: %x", rutsDeLosCabros->enlace);
+            printf("\nrut %s", rutsDeLosCabros->rut);
+        //printf("\nsiguiente Nodo: %x", rutsDeLosCabros->enlace);
         rutsDeLosCabros = rutsDeLosCabros->enlace;
     }
     //liberando memoria de los nodos
     rutsDeLosCabros = inicioRuts;
-    while(rutsDeLosCabros!= NULL){
+    while (rutsDeLosCabros != NULL) {
         inicioRuts = rutsDeLosCabros->enlace;
-        printf("\nrut %s LIBERADO!",rutsDeLosCabros->rut );
+        printf("\nrut %s LIBERADO!", rutsDeLosCabros->rut);
         free(rutsDeLosCabros);
         rutsDeLosCabros = inicioRuts;
     }
 
 }
 
-
-struct nodo * encolar(struct nodo * finCola){
+struct nodo * encolar(struct nodo * finCola) {
     /*
      * Función que recibe el final de una cola, y agrega un nodo nuevo en ella
      * Devuelve el último nodo creado
      */
     struct nodo * nuevo_nodo;
-    nuevo_nodo = malloc(sizeof(struct nodo));
-    if (nuevo_nodo ==NULL){
+    nuevo_nodo = malloc(sizeof (struct nodo));
+    if (nuevo_nodo == NULL) {
         printf("\n ERROR EN ASIGNAR MEMORIA, SALIENDO DEL PROGRAMA");
         return NULL;
     }
     printf("\ninsertando un nodo (ENCOLAR)");
     printf("\nIngresa el RUT: ");
-    scanf("%s", nuevo_nodo->rut );
+    scanf("%s", nuevo_nodo->rut);
     nuevo_nodo->enlace = NULL;
 
     if (finCola == NULL) //Quiere decir que no existen nodos
         finCola = nuevo_nodo;
-    else{
+    else {
         nuevo_nodo->enlace = finCola;
         finCola = nuevo_nodo;
     }
     return finCola;
 }
-struct nodo * desencolar(struct nodo * finCola, struct nodo * inicioCola){
+
+struct nodo * desencolar(struct nodo * finCola, struct nodo * inicioCola) {
     struct nodo * nuevoInicio;
 
-    if(inicioCola == NULL){//no hay nodos
+    if (inicioCola == NULL) {//no hay nodos
         printf("\nNo existen nodos por procesar.");
         return NULL;
-    }else if(inicioCola == finCola){ //ese el único y último nodo
+    } else if (inicioCola == finCola) { //ese el único y último nodo
         printf("\nEliminando el último nodo (DESENCOLAR)");
-        printf("\nRUT: %s", inicioCola->rut );
+        printf("\nRUT: %s", inicioCola->rut);
         printf("\nEnlace: %x", inicioCola->enlace);
         free(inicioCola);
         return NULL;
-    } else{//hay mas de un nodo
+    } else {//hay mas de un nodo
         //buscamos el nodo anterior al inicio
         nuevoInicio = finCola; //recorremos del final hasta llegar al nodo anterior al inicio
         while (nuevoInicio->enlace != inicioCola)
             nuevoInicio = nuevoInicio->enlace; //avanzamos un nodo
         printf("\nEliminando un nodo (DESENCOLAR)");
-        printf("\nRUT: %s", inicioCola->rut );
+        printf("\nRUT: %s", inicioCola->rut);
         printf("\nEnlace: %x", inicioCola->enlace);
 
         free(inicioCola); //LIBERAMOS EL INICIO DE LA COLA ( SE ATIENDE A LA PERSONA y se va)
         nuevoInicio->enlace = NULL; //el enlace de nuevo inicio debe apuntar a null ahora
         printf("\nNUEVO INICIO AHORA ES:");
-        printf("\nRUT: %s", nuevoInicio->rut );
+        printf("\nRUT: %s", nuevoInicio->rut);
         printf("\nEnlace: %x", nuevoInicio->enlace);
 
 
@@ -116,15 +118,15 @@ struct nodo * desencolar(struct nodo * finCola, struct nodo * inicioCola){
     }
 
 }
-int mostrarCola(struct nodo * inicioCola){
+
+int mostrarCola(struct nodo * inicioCola) {
     struct nodo * ptr_recorre = inicioCola;
-    if (ptr_recorre == NULL){
+    if (ptr_recorre == NULL) {
         printf("\nNo existen datos en la COLA!");
         return 0;
-    }
-    else{
+    } else {
         printf("\n\tMOSTRANDO LOS DATOS DE LA COLA");
-        while (ptr_recorre != NULL){
+        while (ptr_recorre != NULL) {
             if (inicioCola == ptr_recorre)
                 printf("\nFIN!");
 
@@ -138,57 +140,57 @@ int mostrarCola(struct nodo * inicioCola){
     }
 }
 
-struct nodo * pop( struct nodo * finPila){
+struct nodo * pop(struct nodo * finPila) {
     struct nodo * nodo_eliminar = finPila;
-    if (finPila == NULL){//no existen nodos por eliminar
+    if (finPila == NULL) {//no existen nodos por eliminar
         printf("\nNo existen nodos por eliminar!");
         return NULL;
-    } else if(finPila->enlace == NULL){//es el último nodo
+    } else if (finPila->enlace == NULL) {//es el último nodo
         printf("\nEliminando el último nodo (PUSH)");
-        printf("\nRUT: %s", nodo_eliminar->rut );
+        printf("\nRUT: %s", nodo_eliminar->rut);
         printf("\nEnlace: %x", nodo_eliminar->enlace);
         free(nodo_eliminar);
         return NULL;
-    }else{
+    } else {
         printf("\nEliminando un nodo (PUSH)");
-        printf("\nRUT: %s", nodo_eliminar->rut );
+        printf("\nRUT: %s", nodo_eliminar->rut);
         printf("\nEnlace: %x", nodo_eliminar->enlace);
 
-        finPila = finPila->enlace;                      //avanzamoe el final de la pila al siguiente nodo. (y eliminamos el anterior)
+        finPila = finPila->enlace; //avanzamoe el final de la pila al siguiente nodo. (y eliminamos el anterior)
         free(nodo_eliminar);
         return finPila;
     }
 }
-struct nodo * push( struct nodo * finPila){
+
+struct nodo * push(struct nodo * finPila) {
     struct nodo * ptr_nuevoNodo;
-    ptr_nuevoNodo = malloc(sizeof(struct nodo));
-    if (ptr_nuevoNodo ==NULL){
+    ptr_nuevoNodo = malloc(sizeof (struct nodo));
+    if (ptr_nuevoNodo == NULL) {
         printf("\n ERROR EN ASIGNAR MEMORIA, SALIENDO DEL PROGRAMA");
         return NULL;
     }
     printf("\ninsertando un nodo (PUSH)");
     printf("\nIngresa el RUT: ");
-    scanf("%s", ptr_nuevoNodo->rut );
+    scanf("%s", ptr_nuevoNodo->rut);
     ptr_nuevoNodo->enlace = NULL;
 
     if (finPila == NULL) //Quiere decir que no existen nodos, por lo tanto, el nuevo nodo, será el fin y también el inicio de la pila!
         finPila = ptr_nuevoNodo;
-    else{
+    else {
         ptr_nuevoNodo->enlace = finPila;
         finPila = ptr_nuevoNodo;
     }
     return finPila;
 }
 
-int mostrarPila(struct nodo * finPila){
+int mostrarPila(struct nodo * finPila) {
     struct nodo * ptr_recorre = finPila;
-    if (ptr_recorre == NULL){
+    if (ptr_recorre == NULL) {
         printf("\nNo existen datos en la PILA!");
         return 0;
-    }
-    else{
+    } else {
         printf("\n\tMOSTRANDO LOS DATOS DE LA PILA");
-        while (ptr_recorre != NULL){
+        while (ptr_recorre != NULL) {
             if (finPila == ptr_recorre)
                 printf("\nFIN!");
 
@@ -202,9 +204,9 @@ int mostrarPila(struct nodo * finPila){
     }
 }
 
-int menuPilas(){
+int menuPilas() {
     int opcion;
-    system("clear");
+    //system("clear");
     printf("\n\t\tBIENVENIDOS AL MENÚ de PILAS!!");
     printf("\n\t1) para ingresar (PUSH)");
     printf("\n\t2) para Eliminar (POP)");
@@ -214,9 +216,10 @@ int menuPilas(){
     scanf("%d", &opcion);
     return opcion;
 }
-int menuColas(){
+
+int menuColas() {
     int opcion;
-    system("clear");
+    //system("clear");
     printf("\n\t\tBIENVENIDOS AL MENÚ de COLAS!");
     printf("\n\t1) para ingresar (ENCOLAR)");
     printf("\n\t2) para Eliminar (DESENCOLAR)");
@@ -226,9 +229,10 @@ int menuColas(){
     scanf("%d", &opcion);
     return opcion;
 }
-int menuPrincipal(){
+
+int menuPrincipal() {
     int opcion;
-    system("clear");
+    //system("clear");
     printf("\n\t\tBIENVENIDOS AL MENÚ PRINCIPAL!");
     printf("\n\t1) para ingresar al menú de COLAS");
     printf("\n\t2) para ingresar al menú de PILAS");
@@ -237,6 +241,7 @@ int menuPrincipal(){
     scanf("%d", &opcion);
     return opcion;
 }
+
 int main() {
     int op_menu1, op_menu2;
     struct nodo * inicioCola, *finCola;
@@ -246,7 +251,7 @@ int main() {
     finPila = NULL;
     inicioCola = NULL;
     finCola = NULL;
-    do{
+    do {
         op_menu1 = menuPrincipal();
         switch (op_menu1) {
             case 1:
@@ -260,7 +265,7 @@ int main() {
                             if (inicioCola == NULL) {
                                 inicioCola = encolar(finCola);
                                 finCola = inicioCola;
-                            }else
+                            } else
                                 finCola = encolar(finCola);
                             break;
                         case 2://desencolar
@@ -276,7 +281,7 @@ int main() {
                             printf("Opción inválida, intenta nuevamente.");
 
                     }
-                } while (op_menu2!=4);
+                } while (op_menu2 != 4);
                 getchar();
                 break;
             case 2:
@@ -290,7 +295,7 @@ int main() {
                             if (inicioPila == NULL) {
                                 inicioPila = push(finPila);
                                 finPila = inicioPila;
-                            }else
+                            } else
                                 finPila = push(finPila);
                             break;
                         case 2://POP
@@ -306,7 +311,7 @@ int main() {
                             printf("Opción inválida, intenta nuevamente.");
 
                     }
-                } while (op_menu2!=4);
+                } while (op_menu2 != 4);
                 break;
             case 3:
                 //salir del programa
@@ -316,6 +321,6 @@ int main() {
                 printf("Opción inválida, intenta nuevamente.");
 
         }
-    }while (op_menu1!=3);
+    } while (op_menu1 != 3);
     return 0;
 }
